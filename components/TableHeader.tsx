@@ -1,8 +1,8 @@
 import { TableCell, TableHead, TableRow, TableSortLabel } from "@material-ui/core";
 
-import Order from "../../../model/order/Order";
-import HeadCell from "../../../model/table/HeadCell";
-import TableHeaderProps from "../../../model/table/TableHeadProps";
+import Order from "../model/order/Order";
+import HeadCell from "../model/table/HeadCell";
+import TableHeaderProps from "../model/table/TableHeaderProps";
 
 export type TableOrder = "asc" | "desc";
 
@@ -28,7 +28,7 @@ export const headCells: HeadCell[] = [
 	{ id: "date", label: "Data", hideable: false },
 	{ id: "debt", label: "Pendencia", hideable: true },
 	{ id: "total", label: "Total", hideable: false },
-	{ id: "_id", label: "#ID", hideable: true },
+	{ id: "_id", label: "#ID do Pedido", hideable: true },
 ];
 
 export function TableHeader(props: TableHeaderProps) {

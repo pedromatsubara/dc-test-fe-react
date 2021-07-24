@@ -1,5 +1,5 @@
 import Order from "../order/Order";
-import { TableOrder } from "../../lib/helper/table/header";
+import { TableOrder } from "../../components/TableHeader";
 
 export default interface TableHeaderProps {
 	onSort: (property: keyof Order) => void;
