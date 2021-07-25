@@ -1,4 +1,4 @@
-import Order from "../order/Order";
+import Order from "../Order";
 
 export default interface HeadCell {
 	id: keyof Order;

@@ -12,6 +12,12 @@ function updatedOrders(orders: Order[]) {
 		updatedOrder.total = (order.amount + order.deliveryFee) / 100;
 		updatedOrder.debt =	(order.amount + order.deliveryFee - order.payments[0].amount) / 100;
 		updatedOrder.date = dateNow - order.reference * order.deliveryFee;
+		updatedOrder.amount = order.amount / 100;
+		updatedOrder.deliveryFee = order.deliveryFee / 100;
+
+		const fakePastDate = new Date(updatedOrder.date);
+		updatedOrder.day = fakePastDate.toLocaleDateString().slice(0, 5);
+		updatedOrder.time = fakePastDate.toLocaleTimeString().slice(0, 5);
 		return updatedOrder;
 	});
 }

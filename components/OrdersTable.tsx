@@ -1,11 +1,16 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import { Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper, TextField } from "@material-ui/core";
 
 import { AppContext } from "../lib/AppContextProvider";
 import { sort, sorter, TableOrder, TableHeader } from "./TableHeader"
 import Order from "../model/order/Order";
 import classes from "../components/ordersTable.module.css";
+
+const filterBySearch = (filter: string, orders: Order[]) => {
+	if (filter === "") return orders;
+	return orders.filter(order => JSON.stringify(Object.values(order).join()).toLowerCase().indexOf(filter) !== -1);
+}
 
 export default function OrdersTable() {
 	const router = useRouter();
@@ -14,24 +19,31 @@ export default function OrdersTable() {
 	const [orderBy, setOrderBy] = useState<keyof Order>("date");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [filter, setFilter] = useState("");
 
 	const orderedOrders = sort(orders, order === "asc" ? (a, b) => sorter(b, a, orderBy) : (a, b) => sorter(a, b, orderBy));
-	const filteredOrders = orderedOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-	const emptyRows = rowsPerPage -	Math.min(rowsPerPage, orders.length - page * rowsPerPage);
+	const filteredOrders = filterBySearch(filter, orderedOrders);
+	const emptyRows = rowsPerPage -	Math.min(rowsPerPage, filteredOrders.length - page * rowsPerPage);
 
 	const handleChangePage = (event: any, newPage: number) => setPage(newPage);
+
 	const handleSort = (property: keyof Order) => {
 		setOrder(orderBy === property && order === "asc" ? "desc" : "asc");
 		setOrderBy(property);
-	};
+	}
+	const handlefilter = (event: any) => {
+		setFilter(event.target.value);
+		setPage(0);
+	}
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
-	};
+	}
 
 	return (
 		<div className={classes.root}>
 			<Paper>
+				<TextField label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
 				<TableContainer>
 					<Table>
 						<TableHeader
@@ -40,21 +52,20 @@ export default function OrdersTable() {
 							onSort={handleSort}
 						/>
 						<TableBody>
-							{filteredOrders.map((order) => {
-								const date = new Date(order.date).toLocaleDateString().slice(0, 5);
-								const time = new Date(order.date).toLocaleTimeString().slice(0, 5);
-
-								return (
-									<TableRow onClick={() => router.push("orders/" + order._id)} key={order._id} hover>
-										<TableCell id={order._id}>{order.store}</TableCell>
-										<TableCell>{order.client}</TableCell>
-										<TableCell>{time} {date}</TableCell>
-										<TableCell>R$ {order.debt.toFixed(2)}</TableCell>
-										<TableCell>R$ {order.total.toFixed(2)}</TableCell>
-										<TableCell>{order._id}</TableCell>
-									</TableRow>
-								)})
-							}
+							{filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => {
+								return <TableRow 
+										onClick={() => router.push("orders/" + order._id)}
+										key={order._id}
+										style={index % 2 === 0 ? {backgroundColor: "#fed4cb"} : {}}
+										hover>
+									<TableCell id={order._id}>{order.store}</TableCell>
+									<TableCell>{order.client}</TableCell>
+									<TableCell>{order.time} {order.day}</TableCell>
+									<TableCell>R$ {order.debt.toFixed(2)}</TableCell>
+									<TableCell>R$ {order.total.toFixed(2)}</TableCell>
+									<TableCell>{order._id}</TableCell>
+								</TableRow>
+							})}
 							<TableRow className={emptyRows > 0 ? "" : "hide"} style={{ height: 53 * emptyRows }}>
 								<TableCell colSpan={6} />
 							</TableRow>
@@ -62,9 +73,10 @@ export default function OrdersTable() {
 					</Table>
 				</TableContainer>
 				<TablePagination
-					rowsPerPageOptions={[5, 10]}
 					component="div"
-					count={orders.length}
+					className={classes.cell}
+					rowsPerPageOptions={[5, 10]}
+					count={filteredOrders.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}

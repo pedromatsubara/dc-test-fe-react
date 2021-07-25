@@ -14,6 +14,8 @@ export default interface Order {
 	address: Address;
 	debt: number;
 	date: number;
+	day: string;
+	time: string;
 	total: number;
 	client: string;
 	reference: number;

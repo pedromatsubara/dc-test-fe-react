@@ -1,4 +1,9 @@
-export default interface Customer {
+export default interface Address {
 	_id: string;
-	name: string;
+	number: string;
+	neighborhood: string;
+	complement: string;
+	city: string;
+	state: string;
+	street: string;
 }
