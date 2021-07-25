@@ -1,5 +1,6 @@
-export default interface Payment {
+export type MethodType = "CREDIT" | "DEBIT" | "ONLINE";
+export interface Payment {
   _id: string;
-  method: string;
+  method: keyof MethodType;
   amount: number;
 }

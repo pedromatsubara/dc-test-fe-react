@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 import {
   Table,
   TableBody,
@@ -13,8 +14,32 @@ import {
 
 import { AppContext } from "../lib/AppContextProvider";
 import { sort, sorter, TableOrder, TableHeader } from "./TableHeader";
-import Order from "../model/order/Order";
-import classes from "../components/ordersTable.module.css";
+import { Order } from "../model/order/Order";
+
+const PaperTable = styled(Paper)`
+  max-width: 810px;
+  margin: 0 auto;
+`;
+
+const EvenOddRows = styled(TableRow)`
+  :nth-child(odd) {
+    background-color: #fed4cb;
+  }
+  :nth-child(even) {
+    background-color: #fdf9f9;
+  }
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const TableFooter = styled.div`
+  div,
+  svg {
+    background-color: #d47855;
+    color: #fdf9f9;
+  }
+`;
 
 const filterBySearch = (filter: string, orders: Order[]) => {
   if (filter === "") return orders;
@@ -53,49 +78,41 @@ export default function OrdersTable() {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper>
-        <TextField label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
-        <TableContainer>
-          <Table>
-            <TableHeader order={order} orderBy={orderBy} onSort={handleSort} />
-            <TableBody>
-              {filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => {
-                return (
-                  <TableRow
-                    onClick={() => router.push("orders/" + order._id)}
-                    key={order._id}
-                    style={index % 2 === 0 ? { backgroundColor: "#fed4cb" } : {}}
-                    hover
-                  >
-                    <TableCell id={order._id}>{order.store}</TableCell>
-                    <TableCell>{order.client}</TableCell>
-                    <TableCell>
-                      {order.time} {order.day}
-                    </TableCell>
-                    <TableCell>R$ {order.debt.toFixed(2)}</TableCell>
-                    <TableCell>R$ {order.total.toFixed(2)}</TableCell>
-                    <TableCell>{order._id}</TableCell>
-                  </TableRow>
-                );
-              })}
-              <TableRow className={emptyRows > 0 ? "" : "hide"} style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          component="div"
-          className={classes.cell}
-          rowsPerPageOptions={[5, 10]}
-          count={filteredOrders.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+    <PaperTable>
+      <TextField label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
+      <TableContainer>
+        <Table>
+          <TableHeader order={order} orderBy={orderBy} onSort={handleSort} />
+          <TableBody>
+            {filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order) => {
+              return (
+                <EvenOddRows onClick={() => router.push("orders/" + order._id)} key={order._id}>
+                  <TableCell id={order._id}>{order.store}</TableCell>
+                  <TableCell>{order.client}</TableCell>
+                  <TableCell>
+                    {order.time} {order.day}
+                  </TableCell>
+                  <TableCell>R$ {order.debt.toFixed(2)}</TableCell>
+                  <TableCell>R$ {order.total.toFixed(2)}</TableCell>
+                  <TableCell>{order._id}</TableCell>
+                </EvenOddRows>
+              );
+            })}
+            <TableRow className={emptyRows > 0 ? "" : "hide"} style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        component={TableFooter}
+        rowsPerPageOptions={[5, 10]}
+        count={filteredOrders.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </PaperTable>
   );
 }

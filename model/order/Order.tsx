@@ -1,9 +1,9 @@
-import Address from "./Address";
-import Customer from "./Customer";
-import Item from "./Item";
-import Payment from "./Payment";
+import { Address } from "./Address";
+import { Customer } from "./Customer";
+import { Item } from "./Item";
+import { Payment } from "./Payment";
 
-export default interface Order {
+export interface Order {
   _id: string;
   store: string;
   amount: number;

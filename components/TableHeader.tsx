@@ -1,9 +1,22 @@
 import { TableCell, TableHead, TableRow, TableSortLabel } from "@material-ui/core";
+import styled from "styled-components";
 
-import Order from "../model/order/Order";
-import HeadCell from "../model/order/table/HeadCell";
-import TableHeaderProps from "../model/order/table/TableHeaderProps";
-import classes from "../components/tableHeader.module.css";
+import { Order } from "../model/order/Order";
+import { HeadCell } from "../model/order/table/HeadCell";
+import { TableHeaderProps } from "../model/order/table/TableHeaderProps";
+
+const ModifiedTableHead = styled(TableHead)`
+  background-color: #d47855;
+`;
+
+const TableSort = styled(TableSortLabel)`
+  span,
+  svg {
+    color: #fdf9f9 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+`;
 
 export type TableOrder = "asc" | "desc";
 
@@ -43,21 +56,20 @@ export function TableHeader(props: TableHeaderProps) {
   const createSortHandler = (property: keyof Order) => () => onSort(property);
 
   return (
-    <TableHead className={classes.root}>
+    <ModifiedTableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell key={headCell.id} className={classes.cell} sortDirection={orderBy === headCell.id ? order : false}>
-            <TableSortLabel
+          <TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
+            <TableSort
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
-              className={classes.cell}
             >
-              {headCell.label}
-            </TableSortLabel>
+              <span>{headCell.label}</span>
+            </TableSort>
           </TableCell>
         ))}
       </TableRow>
-    </TableHead>
+    </ModifiedTableHead>
   );
 }

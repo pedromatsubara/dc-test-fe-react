@@ -1,4 +1,4 @@
-export default interface Customer {
+export interface Customer {
   _id: string;
   name: string;
 }

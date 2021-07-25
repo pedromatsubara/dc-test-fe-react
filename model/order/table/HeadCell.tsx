@@ -1,6 +1,6 @@
-import Order from "../Order";
+import { Order } from "../Order";
 
-export default interface HeadCell {
+export interface HeadCell {
   id: keyof Order;
   label: string;
   hideable: boolean;

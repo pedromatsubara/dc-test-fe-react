@@ -1,4 +1,4 @@
-export default interface Item {
+export interface Item {
   _id: string;
   name: string;
   amount: string;
