@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier-format": "prettier --config .prettierrc './*' --write"
   },
   "dependencies": {
     "@apollo/client": "^3.3.21",
@@ -20,6 +21,8 @@
     "@types/react": "17.0.14",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",
+    "onchange": "^7.1.0",
+    "prettier": "^2.3.2",
     "typescript": "4.3.5"
   }
 }

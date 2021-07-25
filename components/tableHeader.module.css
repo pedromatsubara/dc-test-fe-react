@@ -1,9 +1,10 @@
 .root {
-	background-color: #d47855;
+  background-color: #d47855;
 }
 
-.cell, .cell svg {
-	color: #fff !important;
-	font-weight: bold;
-	text-transform: uppercase;
+.cell,
+.cell svg {
+  color: #fff !important;
+  font-weight: bold;
+  text-transform: uppercase;
 }

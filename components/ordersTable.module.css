@@ -1,9 +1,10 @@
 .root {
-	max-width: 810px;
-	margin: 0 auto;
+  max-width: 810px;
+  margin: 0 auto;
 }
 
-.cell, .cell svg {
-	background-color: #d47855;
-	color: #fff !important;
+.cell,
+.cell svg {
+  background-color: #d47855;
+  color: #fff !important;
 }
