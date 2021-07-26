@@ -21,6 +21,10 @@ const PaperTable = styled(Paper)`
   margin: 0 auto;
 `;
 
+const TableSearch = styled(TextField)`
+  width: 100%;
+`;
+
 const EvenOddRows = styled(TableRow)`
   :nth-child(odd) {
     background-color: #fed4cb;
@@ -79,7 +83,7 @@ export default function OrdersTable() {
 
   return (
     <PaperTable>
-      <TextField label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
+      <TableSearch label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
       <TableContainer>
         <Table>
           <TableHeader order={order} orderBy={orderBy} onSort={handleSort} />

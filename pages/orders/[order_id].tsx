@@ -10,7 +10,7 @@ export default function OrderDetailPage() {
   const orders = useContext(AppContext);
   const order = orders.find((order) => order._id === router.query.order_id);
 
-  if (!order) return "Not found!";
+  if (!order) window.location.href = "/orders";
 
   return (
     <OrderDetails order={order} />

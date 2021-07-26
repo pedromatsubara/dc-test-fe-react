@@ -1,7 +1,10 @@
 import { createContext } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ORDERS } from "./graphql/getOrders";
-import Order from "../model/order/Order";
+import { Order } from "../model/order/Order";
+import dynamic from "next/dynamic";
+
+const Loading = dynamic(() => import("../components/Loading"), { ssr: false });
 
 // temporary helper function (mock)
 function updatedOrders(orders: Order[]) {
@@ -27,7 +30,7 @@ export const AppContext = createContext<Order[]>([]);
 export default function AppContextProvider({ children }: any) {
   const { loading, error, data } = useQuery(GET_ORDERS);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Oops! Algo deu errado ${error.message}</p>;
   if (!data.orders || data.orders.length === 0) return <p>Lista de pedidos vazia!</p>;
 
