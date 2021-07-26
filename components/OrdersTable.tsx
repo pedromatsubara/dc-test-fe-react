@@ -83,7 +83,14 @@ export default function OrdersTable() {
 
   return (
     <PaperTable>
-      <TableSearch label="Busca geral" type="search" onChange={(event) => handlefilter(event)} />
+      <TableSearch
+        size="small"
+        error
+        variant="outlined"
+        label="Pesquisar..."
+        type="search"
+        onChange={(event) => handlefilter(event)}
+      />
       <TableContainer>
         <Table>
           <TableHeader order={order} orderBy={orderBy} onSort={handleSort} />

@@ -28,7 +28,7 @@ export default function TopBar() {
             <MenuIcon />
           </IconButton>
           <Title variant="h6">Pedidos</Title>
-          <Button color="inherit"><Image src={DeliveryImage} alt="Delivery Center" height={46} width={208} /></Button>
+          <Button component="a" href="https://www.deliverycenter.com/" target="_blank"color="inherit"><Image src={DeliveryImage} alt="Delivery Center" height={46} width={208} /></Button>
         </Toolbar>
       </NavBar>
     </div>

@@ -22,6 +22,15 @@ const ModifiedCard = styled(Card)`
   background-color: #ebe99f !important;
 `;
 
+const Title = styled.span`
+  font-weight: bold;
+  font-size: 1.5em;
+`;
+
+const Small = styled.small`
+  color: #666;
+`;
+
 const getPaymentMethod = (method: keyof MethodType) => {
   switch (method.toString()) {
     case "CREDIT":
@@ -40,16 +49,16 @@ export default function OrderDetails(props: any) {
   return (
     <ModifiedCard variant="outlined">
       <CardContent>
-        <List>
+        <List dense>
           <ListItem>
             <IconButton onClick={() => router.push("/orders")}>
               <ArrowBack />
             </IconButton>
-            <ListItemText>{`Pedido de ${client} no ${store}`}</ListItemText>
+            <ListItemText><Title>{`Pedido de ${client} no ${store}`}</Title></ListItemText>
           </ListItem>
           <ListItem>
-            <ListItemText>{`Dia ${day} às ${time}`}</ListItemText>
-            <ListItemSecondaryAction>{`#${_id}`}</ListItemSecondaryAction>
+            <ListItemText><Small>{`Dia ${day} às ${time}`}</Small></ListItemText>
+            <ListItemSecondaryAction><Small>{`#${_id}`}</Small></ListItemSecondaryAction>
           </ListItem>
 
           <Divider />
@@ -99,7 +108,7 @@ export default function OrderDetails(props: any) {
             payments.map((payment) => {
               return (
                 <ListItem key={payment._id}>
-                  <ListItemText>{`Pagamento (${getPaymentMethod(payment.method)}):`}</ListItemText>
+                  <ListItemText>{`Pagamento Realizado (${getPaymentMethod(payment.method)}):`}</ListItemText>
                   <ListItemSecondaryAction>{`R$ ${(payment.amount / 100).toFixed(2)}`}</ListItemSecondaryAction>
                 </ListItem>
               );
